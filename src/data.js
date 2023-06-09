@@ -5,7 +5,7 @@ export const data = {
       {
         id: "1",
         name: "Child - 1",
-        children:[],
+        children:[]
       },
       {
         id: "3",
@@ -18,6 +18,7 @@ export const data = {
               {
                 id: "5",
                 name: "Child - 5",
+                children:[]
               },
             ],
           },

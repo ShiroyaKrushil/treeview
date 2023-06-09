@@ -10,12 +10,10 @@ import Select from '@mui/material/Select';
 import { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import { GrClose } from 'react-icons/gr'
-import { data } from './data'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import FormHelperText from '@mui/material/FormHelperText';
-import { toast } from "react-toastify";
-
+import { data } from '../data'; 
 
 const style = {
     position: 'absolute',
@@ -28,46 +26,16 @@ const style = {
     p: 4,
 };
 
-export default function CustomModal() {
+export default function CustomModal(props) {
 
 
     const [open, setOpen] = useState(false);
-
-    const [item, setItem] = useState('');
-    const [selectitem, setSelectitem] = useState('');
-    const [newRecord, setNewRecord] = useState(data)
+    const [alldata, setAlldata] = useState(data)
 
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-
-
-    const submit = (value) => {
-        alert('ok')
-        console.log(value)
-    }
-
-    // const addhandler = () => {
-    //     if (selectitem) {
-    //         var id = Math.floor(Math.random() * 100 + 1).toString();
-
-    //         let newdata = { id: id, name: item, children: [] };
-
-    //         const adddata = (d) => {
-
-    //             if (d.name === selectitem) {
-    //                 d.children?.push(newdata)
-    //                 setItem('')
-    //                 setSelectitem('')
-    //             } else {
-    //                 d.children?.map((item) => adddata(item))
-    //             }
-    //         }
-    //         adddata(data)
-    //     }
-    //     setOpen(false)
-    // };
 
 
     const options = (nodes) => {
@@ -78,15 +46,15 @@ export default function CustomModal() {
 
         if (nodes.children) {
             nodes.children.forEach((node) => {
-                menuitem.push(...options(node))
+                menuitem.push(options(node))
             });
         }
         return menuitem;
     }
 
     useEffect(() => {
-        setNewRecord(newRecord)
-    }, [newRecord])
+        setAlldata(alldata)
+    }, [alldata])
 
     const initialValues = {
         item: '',
@@ -96,30 +64,13 @@ export default function CustomModal() {
     const validationSchema = yup.object().shape({
         item: yup.string().required('Please enter item name'),
         selectitem: yup.string().required('Please Select a item'),
-
     })
 
     const { values, errors, touched , handleChange, handleSubmit } = useFormik({
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: (value) => {
-            if (value.selectitem) {
-                var id = Math.floor(Math.random() * 100 + 1).toString();
-                let newdata = { id: id, name: value.item, children: [] };
-
-                const adddata = (d) => {
-                    if (d.name === value.selectitem) {
-                        d.children?.push(newdata)
-                        toast.success("Data added successfully");
-                    } else {
-                        d.children?.map((item) => adddata(item))
-                    }
-                }
-                adddata(data)
-            }else{
-                toast.error('Data not inserted.. ')
-            }
-
+               props.save(value)
             setOpen(false)
             value.item='';
             value.selectitem='';
@@ -159,7 +110,7 @@ export default function CustomModal() {
                                 
                             >
 
-                                {options(data)}
+                                {options(alldata)}
 
                             </Select>
                             <FormHelperText style={{color:'red'}}>{errors.selectitem && touched.selectitem ? errors.selectitem : null}</FormHelperText>

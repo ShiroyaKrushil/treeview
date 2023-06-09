@@ -3,14 +3,10 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import { GrClose } from 'react-icons/gr'
-import { data } from './data'
 import Delete from './Delete';
 
 
@@ -26,14 +22,17 @@ const style = {
 };
 
 export default function Editmodal(props) {
-    const [open, setOpen] = React.useState(false);
 
+//------------------- Open Delete modal-------------------------
+
+    const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
       setOpen(true);
     };
   
     const handleClose = () => {
       setOpen(false);
+    
     };
 
 
@@ -43,6 +42,11 @@ export default function Editmodal(props) {
         props.editdata(item)
     };
 
+    const removeData = () => {
+        props.delete()
+        setOpen(false)
+        props.close()
+    }
  
     const options = (nodes) => {
         let menuitem = [];
@@ -67,6 +71,7 @@ export default function Editmodal(props) {
             <Modal
                 keepMounted
                 open={props.open}
+                onClick={props.closeeditmodal}
                 aria-labelledby="keep-mounted-modal-title"
                 aria-describedby="keep-mounted-modal-description"
             >
@@ -82,7 +87,7 @@ export default function Editmodal(props) {
                     </Stack>
                 </Box>
             </Modal>
-            <Delete close={handleClose} open={open}/>
+            <Delete close={handleClose} open={open} delete={removeData} />
         </div>
     )
 }

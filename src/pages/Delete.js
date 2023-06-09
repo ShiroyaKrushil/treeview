@@ -24,7 +24,7 @@ export default function Delete(props) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={props.close}>Disagree</Button>
-                    <Button autoFocus>
+                    <Button autoFocus type='button' onClick={props.delete}>
                         Agree
                     </Button>
                 </DialogActions>
